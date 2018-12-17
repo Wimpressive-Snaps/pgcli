@@ -1,0 +1,26 @@
+name: pgcli
+base: core18
+version: 'git'
+summary: Postgres CLI with autocompletion and syntax highlighting
+description: |
+  A command line client for Postgress that can do auto-completion and
+  syntax highlighting.
+
+grade: stable
+confinement: strict
+
+parts:
+  pgcli:
+    plugin: python
+    source: .
+    override-build: |
+      snapcraftctl build
+      pip install pgcli --no-binary :all: psycopg2
+
+apps:
+  pgcli:
+    command: bin/pgcli
+    environment:
+      LC_ALL: C.UTF-8
+    plugs:
+      - network
